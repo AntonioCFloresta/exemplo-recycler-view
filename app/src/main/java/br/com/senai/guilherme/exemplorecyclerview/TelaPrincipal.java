@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class TelaPrincipal extends AppCompatActivity {
+    CursoItemRecyclerAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +22,15 @@ public class TelaPrincipal extends AppCompatActivity {
         RecyclerView recyclerViewCursos = (RecyclerView) findViewById(R.id.recyclerViewCursos);
         recyclerViewCursos.setLayoutManager(new LinearLayoutManager(this));
 
-        CursoItemRecyclerAdapter mAdapter = new CursoItemRecyclerAdapter(buscarCursos());
+        mAdapter = new CursoItemRecyclerAdapter(buscarCursos());
         recyclerViewCursos.setAdapter(mAdapter);
+
+        recyclerViewCursos.addOnItemTouchListener(new RecyclerOnItemClickListener(this, new RecyclerOnItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                onItemClicado(position);
+            }
+        }));
     }
 
     private ArrayList<CursoItem> buscarCursos() {
@@ -44,5 +54,11 @@ public class TelaPrincipal extends AppCompatActivity {
         } while (i < 10);
 
         return lista;
+    }
+
+    private void onItemClicado(int position) {
+        CursoItem cursoItem = mAdapter.getItem(position);
+
+        Toast.makeText(getApplicationContext(), cursoItem.getTitulo(), Toast.LENGTH_LONG).show();
     }
 }
