@@ -31,4 +31,8 @@ public class CursoItemRecyclerAdapter extends RecyclerView.Adapter<CursoItemView
     public int getItemCount() {
         return mLista.size();
     }
+
+    public CursoItem getItem(int position) {
+        return mLista.get(position);
+    }
 }
